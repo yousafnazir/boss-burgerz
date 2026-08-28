@@ -154,7 +154,8 @@
     const q = ($('#menuSearch')?.value || '').trim().toLowerCase();
     const filter = $('.chip.is-on')?.dataset.filter || 'all';
     const favs = loadFavs();
-    const cards = $$('.menu-card');
+    const pane = $('.tab-pane.is-on') || document;
+    const cards = $$('.menu-card', pane);
     cards.forEach(card => {
       const name = (card.dataset.name || '') + ' ' + card.innerText;
       const hay = name.toLowerCase();
@@ -166,12 +167,33 @@
       if (ok && filter === 'saved') ok = favs.includes(title);
       card.classList.toggle('hidden', !ok);
     });
-    $$('.menu-section').forEach(sec => {
+    $$('.menu-section', pane).forEach(sec => {
       const visible = $$('.menu-card', sec).some(c => !c.classList.contains('hidden'));
       sec.style.display = visible ? '' : 'none';
     });
     const empty = $('#emptyFilter');
     if (empty) empty.hidden = cards.some(c => !c.classList.contains('hidden'));
+  }
+
+  function showMenuTab(id) {
+    const tabs = $$('.folder-tab');
+    if (!tabs.length) return;
+    const valid = tabs.some(t => t.dataset.tab === id);
+    const next = valid ? id : (tabs[0].dataset.tab || 'burgers');
+    tabs.forEach((t, i) => {
+      const on = t.dataset.tab === next;
+      t.classList.toggle('is-on', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      if (on && i === 0) $('.folder-panel')?.setAttribute('data-edge', 'start');
+    });
+    if (tabs[0]?.dataset.tab !== next) $('.folder-panel')?.removeAttribute('data-edge');
+    $$('.tab-pane').forEach(p => {
+      const on = p.dataset.pane === next;
+      p.classList.toggle('is-on', on);
+      p.hidden = !on;
+    });
+    applyFilters();
   }
 
   mountShell();
@@ -266,16 +288,40 @@
   });
   $('#menuSearch')?.addEventListener('input', applyFilters);
 
-  const links = $$('.catbar a');
-  const sections = $$('.menu-section');
-  if (links.length && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        links.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === '#' + entry.target.id));
+  const folderTabs = $$('.folder-tab');
+  if (folderTabs.length) {
+    const hashId = (location.hash || '').replace('#', '');
+    const mapped = hashId === 'featured' ? 'burgers' : hashId;
+    showMenuTab(mapped);
+    folderTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        showMenuTab(tab.dataset.tab);
+        history.replaceState(null, '', '#' + tab.dataset.tab);
       });
-    }, { rootMargin: '-30% 0px -60% 0px' });
-    sections.forEach(sec => io.observe(sec));
+    });
+    const list = $('.folder-tabs');
+    list?.addEventListener('keydown', (e) => {
+      const keys = { ArrowRight: 1, ArrowLeft: -1 };
+      if (!keys[e.key]) return;
+      e.preventDefault();
+      const i = folderTabs.findIndex(t => t.classList.contains('is-on'));
+      const next = folderTabs[(i + keys[e.key] + folderTabs.length) % folderTabs.length];
+      next.focus();
+      next.click();
+    });
+    window.addEventListener('hashchange', () => {
+      const id = location.hash.replace('#', '');
+      if (id === 'contact') return;
+      showMenuTab(id === 'featured' ? 'burgers' : id);
+    });
+    const header = $('.header');
+    const bar = $('.folder-tabs-bar');
+    const pinBar = () => {
+      if (!header || !bar) return;
+      bar.style.top = Math.round(header.getBoundingClientRect().height) + 'px';
+    };
+    pinBar();
+    window.addEventListener('resize', pinBar);
   }
 
   const topBtn = $('#toTop');

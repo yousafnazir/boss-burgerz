@@ -54,17 +54,7 @@
     </div>
   </header>
 
-  <nav class="catbar" aria-label="Menu categories">
-    <div class="wrap">
-      <a href="#featured">Featured</a>
-      <a href="#burgers">Burgers</a>
-      <a href="#chicken">Chicken & more</a>
-      <a href="#sides">Sides</a>
-      <a href="#addons">Add-ons</a>
-      <a href="#drinks">Drinks</a>
-    </div>
-  </nav>
-
+  <div class="menu-board">
   <div class="wrap menu-toolbar">
     <label class="search">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
@@ -87,7 +77,20 @@
   </div>
   <p class="empty-filter wrap" id="emptyFilter" hidden>Nothing matches. Try All, or search “smash”.</p>
 
-  <section class="wrap menu-section" id="featured">
+    <div class="wrap">
+    <div class="menu-card-board">
+    <div class="folder-tabs-bar">
+      <div class="folder-tabs" role="tablist" aria-label="Menu categories">
+        <button type="button" class="folder-tab is-on" role="tab" id="tab-burgers" data-tab="burgers" aria-controls="pane-burgers" aria-selected="true">Burgers</button>
+        <button type="button" class="folder-tab" role="tab" id="tab-chicken" data-tab="chicken" aria-controls="pane-chicken" aria-selected="false" tabindex="-1">Chicken & more</button>
+        <button type="button" class="folder-tab" role="tab" id="tab-sides" data-tab="sides" aria-controls="pane-sides" aria-selected="false" tabindex="-1">Sides</button>
+        <button type="button" class="folder-tab" role="tab" id="tab-addons" data-tab="addons" aria-controls="pane-addons" aria-selected="false" tabindex="-1">Add-ons</button>
+        <button type="button" class="folder-tab" role="tab" id="tab-drinks" data-tab="drinks" aria-controls="pane-drinks" aria-selected="false" tabindex="-1">Drinks</button>
+      </div>
+    </div>
+    <div class="folder-panel" data-edge="start">
+      <div class="tab-pane is-on" role="tabpanel" id="pane-burgers" data-pane="burgers" aria-labelledby="tab-burgers">
+  <section class="menu-section" id="featured">
     <h2>New & favorites</h2>
     <div class="featured">
       <article class="menu-card" data-name="okc smashburger double patty cheddar">
@@ -123,7 +126,7 @@
     </div>
   </section>
 
-  <section class="wrap menu-section" id="burgers">
+  <section class="menu-section" id="burgers">
     <h2>Burgers</h2>
     <div class="menu-grid">
       <article class="menu-card" data-name="classic burger american cheese">
@@ -202,7 +205,6 @@
     </div>
   </section>
 
-  <div class="wrap">
     <div class="promo">
       <div>
         <span class="eyebrow">Combo included</span>
@@ -210,9 +212,10 @@
         <p>No upsell at the window. Order a burger, get the full meal — the Boss way.</p>
       </div>
     </div>
-  </div>
+      </div>
 
-  <section class="wrap menu-section" id="chicken">
+      <div class="tab-pane" role="tabpanel" id="pane-chicken" data-pane="chicken" aria-labelledby="tab-chicken" hidden>
+  <section class="menu-section" id="chicken">
     <h2>Chicken & more</h2>
     <div class="menu-grid">
       <article class="menu-card" data-name="fried chicken sandwich original spicy">
@@ -291,8 +294,10 @@
       </article>
     </div>
   </section>
+      </div>
 
-  <section class="wrap menu-section" id="sides">
+      <div class="tab-pane" role="tabpanel" id="pane-sides" data-pane="sides" aria-labelledby="tab-sides" hidden>
+  <section class="menu-section" id="sides">
     <h2>Sides</h2>
     <div class="menu-grid">
       <article class="menu-card" data-name="french fries waffle fries">
@@ -369,8 +374,10 @@
       </article>
     </div>
   </section>
+      </div>
 
-  <section class="wrap menu-section" id="addons">
+      <div class="tab-pane" role="tabpanel" id="pane-addons" data-pane="addons" aria-labelledby="tab-addons" hidden>
+  <section class="menu-section" id="addons">
     <h2>Add-ons</h2>
     <div class="menu-grid">
       <article class="menu-card" data-name="bacon">
@@ -402,8 +409,10 @@
       </article>
     </div>
   </section>
+      </div>
 
-  <section class="wrap menu-section" id="drinks" style="padding-bottom:72px">
+      <div class="tab-pane" role="tabpanel" id="pane-drinks" data-pane="drinks" aria-labelledby="tab-drinks" hidden>
+  <section class="menu-section" id="drinks">
     <h2>Drinks</h2>
     <div class="menu-grid">
       <article class="menu-card" data-name="fountain drink small">
@@ -435,6 +444,11 @@
       </article>
     </div>
   </section>
+      </div>
+    </div>
+    </div>
+    </div>
+  </div>
 
   <div class="contact-ribbon" id="contact">
     <div class="wrap">
